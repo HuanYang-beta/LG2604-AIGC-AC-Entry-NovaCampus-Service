@@ -11,7 +11,7 @@ function initLiquidGlass() {
         // 应用到底部导航
         const bottomNav = document.querySelector('.bottom-nav');
         if (bottomNav) {
-            applyLiquidGlass(bottomNav, { intensity: 'subtle' });
+            applyLiquidGlass(bottomNav, { intensity: 'normal' });
         }
     }
 }
