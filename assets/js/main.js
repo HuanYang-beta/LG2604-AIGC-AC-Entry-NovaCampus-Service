@@ -35,8 +35,49 @@ function initNavigation() {
     });
 }
 
+// 加载并渲染功能卡片
+function loadCards() {
+    fetch('assets/data/cards.json')
+        .then(response => response.json())
+        .then(data => {
+            renderCards(data.cards);
+        })
+        .catch(error => {
+            console.error('加载卡片数据失败:', error);
+        });
+}
+
+// 渲染卡片到页面
+function renderCards(cards) {
+    const container = document.getElementById('cardsContainer');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    cards.forEach(card => {
+        const cardElement = document.createElement('div');
+        cardElement.className = 'card-item';
+        cardElement.style.borderColor = card.color;
+        
+        cardElement.innerHTML = `
+            <img src="${card.icon}" alt="${card.title}">
+            <h4>${card.title}</h4>
+            <p>${card.description}</p>
+            <a href="${card.link}" class="card-link">查看</a>
+        `;
+        
+        container.appendChild(cardElement);
+        
+        // 应用液态玻璃效果
+        if (typeof applyLiquidGlass !== 'undefined') {
+            applyLiquidGlass(cardElement, { intensity: 'normal' });
+        }
+    });
+}
+
 // 页面加载完成后初始化
 window.addEventListener('DOMContentLoaded', function() {
     initLiquidGlass();
     initNavigation();
+    loadCards();
 });

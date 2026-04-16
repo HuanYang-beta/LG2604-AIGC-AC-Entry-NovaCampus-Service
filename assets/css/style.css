@@ -80,6 +80,77 @@ body {
     justify-content: center;
     align-items: center;
     height: 200px;
+    margin-bottom: 30px;
+}
+
+.cards-section {
+    margin: 20px 0;
+}
+
+.cards-section h3 {
+    color: white;
+    font-size: 20px;
+    margin-bottom: 20px;
+    padding: 0 20px;
+}
+
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 0 20px;
+}
+
+.card-item {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.card-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.card-item img {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 15px;
+    filter: invert(1);
+}
+
+.card-item h4 {
+    color: white;
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.card-item p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+
+.card-item .card-link {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.card-item .card-link:hover {
+    background: rgba(255, 255, 255, 0.3);
 }
 
 .glass-card {

@@ -1,0 +1,52 @@
+{
+  "cards": [
+    {
+      "id": "card-1",
+      "title": "校园公告",
+      "description": "查看最新校园通知和公告",
+      "icon": "assets/icons/HarmonyOS_Icons/ic_contacts_card_single.svg",
+      "color": "#4CAF50",
+      "link": "#"
+    },
+    {
+      "id": "card-2",
+      "title": "课程表",
+      "description": "查看个人课程安排",
+      "icon": "assets/icons/HarmonyOS_Icons/ic_brightness_plus.svg",
+      "color": "#2196F3",
+      "link": "#"
+    },
+    {
+      "id": "card-3",
+      "title": "成绩查询",
+      "description": "查询考试成绩和学分",
+      "icon": "assets/icons/HarmonyOS_Icons/ic_addcontact.svg",
+      "color": "#FF9800",
+      "link": "#"
+    },
+    {
+      "id": "card-4",
+      "title": "图书馆",
+      "description": "图书借阅和预约",
+      "icon": "assets/icons/HarmonyOS_Icons/ic_contacts_incoming_filled.svg",
+      "color": "#9C27B0",
+      "link": "#"
+    },
+    {
+      "id": "card-5",
+      "title": "校园地图",
+      "description": "校园导航和场所查询",
+      "icon": "assets/icons/HarmonyOS_Icons/ic_addcontact_filled.svg",
+      "color": "#F44336",
+      "link": "#"
+    },
+    {
+      "id": "card-6",
+      "title": "校车查询",
+      "description": "校车时刻表和路线",
+      "icon": "assets/icons/HarmonyOS_Icons/ic_contacts_card_single.svg",
+      "color": "#795548",
+      "link": "#"
+    }
+  ]
+}
