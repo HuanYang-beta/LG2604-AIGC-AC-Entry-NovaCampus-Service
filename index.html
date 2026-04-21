@@ -12,52 +12,140 @@
 </head>
 <body>
     <div class="liquid-glass-container">
-        <header class="app-header">
+        <header class="app-header" id="mainHeader">
+            <button class="back-btn" id="backBtn" style="display:none;">
+                <img src="assets/icons/HarmonyOS_Icons/ic_contacts_card_single.svg" alt="返回">
+            </button>
             <h1>NovaCampus Service</h1>
             <p>创星校园服务平台</p>
         </header>
-        
+
         <main class="app-content">
-            <section class="hero-section">
+            <section class="hero-section" id="heroSection">
                 <div class="glass-card">
                     <h2>欢迎使用 NovaCampus Service</h2>
                     <p>为校园生活提供便捷服务</p>
                 </div>
             </section>
-            
-            <section class="cards-section">
+
+            <section class="cards-section" id="cardsSection">
                 <h3>服务功能</h3>
                 <div class="cards-container" id="cardsContainer">
-                    <!-- 卡片将通过JavaScript动态加载 -->
+                </div>
+            </section>
+
+            <section class="feature-page" id="schedulePage" style="display:none;">
+                <h3>作息时间表</h3>
+                <div class="feature-content">
+                    <table class="schedule-table">
+                        <thead>
+                            <tr><th>时间段</th><th>内容</th></tr>
+                        </thead>
+                        <tbody id="scheduleTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="feature-page" id="mapPage" style="display:none;">
+                <h3>校园地图</h3>
+                <div class="feature-content">
+                    <div class="map-grid" id="mapGrid"></div>
+                </div>
+            </section>
+
+            <section class="feature-page" id="lostfoundPage" style="display:none;">
+                <h3>失物招领</h3>
+                <div class="feature-content">
+                    <button class="action-btn" id="addLostFoundBtn">发布失物/招领</button>
+                    <div class="lostfound-list" id="lostfoundList"></div>
+                </div>
+            </section>
+
+            <section class="feature-page" id="suggestPage" style="display:none;">
+                <h3>匿名建议箱</h3>
+                <div class="feature-content">
+                    <div class="suggest-form">
+                        <select id="suggestType">
+                            <option value="canteen">食堂建议</option>
+                            <option value="hygiene">卫生建议</option>
+                            <option value="facility">设施建议</option>
+                            <option value="other">其他</option>
+                        </select>
+                        <textarea id="suggestContent" placeholder="请输入您的建议..."></textarea>
+                        <button class="action-btn" id="submitSuggestBtn">提交建议</button>
+                    </div>
+                    <h4>往期建议</h4>
+                    <div class="suggest-list" id="suggestList"></div>
+                </div>
+            </section>
+
+            <section class="feature-page" id="homeworkPage" style="display:none;">
+                <h3>作业汇总</h3>
+                <div class="feature-content">
+                    <select id="gradeSelect">
+                        <option value="1">一年级</option>
+                        <option value="2">二年级</option>
+                        <option value="3">三年级</option>
+                    </select>
+                    <div class="homework-list" id="homeworkList"></div>
+                </div>
+            </section>
+
+            <section class="feature-page" id="albumPage" style="display:none;">
+                <h3>班级相册</h3>
+                <div class="feature-content">
+                    <div class="album-grid" id="albumGrid"></div>
+                </div>
+            </section>
+
+            <section class="feature-page" id="phonePage" style="display:none;">
+                <h3>校园电话</h3>
+                <div class="feature-content">
+                    <div class="phone-list" id="phoneList"></div>
+                </div>
+            </section>
+
+            <section class="feature-page" id="calendarPage" style="display:none;">
+                <h3>活动日历</h3>
+                <div class="feature-content">
+                    <div class="calendar-list" id="calendarList"></div>
                 </div>
             </section>
         </main>
     </div>
-    
+
     <nav class="bottom-nav">
-        <a href="#" class="nav-item active">
+        <a href="#" class="nav-item active" data-page="home">
             <img src="assets/icons/HarmonyOS_Icons/ic_contacts_card_single.svg" alt="首页">
             <span>首页</span>
         </a>
-        <a href="#" class="nav-item">
+        <a href="#" class="nav-item" data-page="search">
             <img src="assets/icons/HarmonyOS_Icons/ic_brightness_plus.svg" alt="搜索">
             <span>搜索</span>
         </a>
-        <a href="#" class="nav-item">
+        <a href="#" class="nav-item" data-page="add">
             <img src="assets/icons/HarmonyOS_Icons/ic_addcontact.svg" alt="添加">
             <span>添加</span>
         </a>
-        <a href="#" class="nav-item">
+        <a href="#" class="nav-item" data-page="notice">
             <img src="assets/icons/HarmonyOS_Icons/ic_contacts_incoming_filled.svg" alt="通知">
             <span>通知</span>
         </a>
-        <a href="#" class="nav-item">
+        <a href="#" class="nav-item" data-page="profile">
             <img src="assets/icons/HarmonyOS_Icons/ic_addcontact_filled.svg" alt="我的">
             <span>我的</span>
         </a>
     </nav>
-    
-    <script src="assets/lib/liquid-glass-component-kit-main/lib/index.js"></script>
+
+    <div class="modal" id="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="modal-close" id="modalClose">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="assets/lib/liquid-glass-component-kit-main/lib/index.js" type="module"></script>
     <script src="assets/js/main.js"></script>
 </body>
 </html>

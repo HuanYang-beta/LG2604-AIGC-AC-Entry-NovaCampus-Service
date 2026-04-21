@@ -2,51 +2,67 @@
   "cards": [
     {
       "id": "card-1",
-      "title": "校园公告",
-      "description": "查看最新校园通知和公告",
+      "title": "作息时间表",
+      "description": "全校作息时间表，跨班公开",
       "icon": "assets/icons/HarmonyOS_Icons/ic_contacts_card_single.svg",
       "color": "#4CAF50",
-      "link": "#"
+      "link": "#schedule"
     },
     {
       "id": "card-2",
-      "title": "课程表",
-      "description": "查看个人课程安排",
+      "title": "校园地图",
+      "description": "楼层分布、厕所/饮水机/医务室",
       "icon": "assets/icons/HarmonyOS_Icons/ic_brightness_plus.svg",
       "color": "#2196F3",
-      "link": "#"
+      "link": "#map"
     },
     {
       "id": "card-3",
-      "title": "成绩查询",
-      "description": "查询考试成绩和学分",
+      "title": "失物招领",
+      "description": "跨班级公共失物招领，公开浏览",
       "icon": "assets/icons/HarmonyOS_Icons/ic_addcontact.svg",
       "color": "#FF9800",
-      "link": "#"
+      "link": "#lostfound"
     },
     {
       "id": "card-4",
-      "title": "图书馆",
-      "description": "图书借阅和预约",
+      "title": "匿名建议箱",
+      "description": "食堂/卫生/设施匿名反馈",
       "icon": "assets/icons/HarmonyOS_Icons/ic_contacts_incoming_filled.svg",
       "color": "#9C27B0",
-      "link": "#"
+      "link": "#suggest"
     },
     {
       "id": "card-5",
-      "title": "校园地图",
-      "description": "校园导航和场所查询",
+      "title": "作业汇总",
+      "description": "全年级各科作业一目了然",
       "icon": "assets/icons/HarmonyOS_Icons/ic_addcontact_filled.svg",
       "color": "#F44336",
-      "link": "#"
+      "link": "#homework"
     },
     {
       "id": "card-6",
-      "title": "校车查询",
-      "description": "校车时刻表和路线",
+      "title": "班级相册",
+      "description": "老师上传，全员可查看",
       "icon": "assets/icons/HarmonyOS_Icons/ic_contacts_card_single.svg",
+      "color": "#E91E63",
+      "link": "#album"
+    },
+    {
+      "id": "card-7",
+      "title": "校园电话",
+      "description": "保安/班主任/教务处一键拨打",
+      "icon": "assets/icons/HarmonyOS_Icons/ic_call_1_dial.svg",
       "color": "#795548",
-      "link": "#"
+      "link": "#phone"
+    },
+    {
+      "id": "card-8",
+      "title": "活动日历",
+      "description": "校园活动、大扫除安排",
+      "icon": "assets/icons/HarmonyOS_Icons/ic_contacts_card_single.svg",
+      "color": "#00BCD4",
+      "link": "#calendar"
     }
   ]
 }
