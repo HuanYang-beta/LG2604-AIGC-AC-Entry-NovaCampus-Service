@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSwift - Test Page</title>
+    <!-- <link rel="stylesheet" href="/assets/index.css" /> -->
+</head>
+
+<body>
+    <swift-button command="alert('123')">Hello</swift-button>
+    <swift-button primary>Hello</swift-button>
+    <swift-button disabled="true">Hello</swift-button>
+    <swift-button primary disabled="true">Hello</swift-button>
+    <swift-messagebox iconpath="assets/访达.png">
+        <p slot="title">Title Goes Here</p>
+        <p slot="text">Text Goes Here</p>
+        <swift-button primary slot="button">Button Goes Here</swift-button>
+    </swift-messagebox>
+    <swift-checkbox state="on">Hello</swift-checkbox>
+    <swift-checkbox state="off">Hello</swift-checkbox>
+    <swift-checkbox state="on" disabled="true">Hello</swift-checkbox>
+    <swift-checkbox state="off" disabled="true">Hello</swift-checkbox>
+    <swift-window title="Title Goes Here" width="300" height="300">
+        <p>Content Goes Here</p>
+    </swift-window>
+    <swift-switch state="on"></swift-switch>
+    <swift-switch state="off"></swift-switch>
+    <swift-switch state="on" disabled="true"></swift-switch>
+    <swift-switch state="off" disabled="true"></swift-switch>
+    <swift-progress progress="50"></swift-progress>
+    <swift-progress progress="50" small></swift-progress>
+    <swift-input placeholder="Placeholder"></swift-input>
+    <swift-input placeholder="Placeholder" type="search"></swift-input>
+    <swift-input placeholder="Placeholder" disabled="true"></swift-input>
+    <swift-input placeholder="Placeholder" type="search" disabled="true"></swift-input>
+    <swift-tooltip>This is a tooltip.</swift-tooltip>
+    <swift-notification iconpath="assets/访达.png">
+        <p slot="title">Notification Title</p>
+        <p slot="text">Notification Text<br />Notification Text</p>
+        <p slot="time">now</p>
+    </swift-notification>
+    <swift-menu width="200">
+        <p>Hello World</p>
+        <p>WebSwift</p>
+        <p>Author: Mengobs</p>
+    </swift-menu>
+
+    <script src="./dist/webswift.js"></script>
+</body>
+
+</html>

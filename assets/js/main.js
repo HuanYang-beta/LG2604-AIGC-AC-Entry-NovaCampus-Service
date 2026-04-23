@@ -87,10 +87,6 @@ function initLiquidGlass() {
         glassCards.forEach(card => {
             applyLiquidGlass(card, { intensity: 'normal' });
         });
-        const bottomNav = document.querySelector('.bottom-nav');
-        if (bottomNav) {
-            applyLiquidGlass(bottomNav, { intensity: 'normal' });
-        }
     }
 }
 
@@ -129,7 +125,7 @@ function renderCards(cards) {
             <h4>${card.title}</h4>
             <p>${card.description}</p>
         `;
-        cardElement.addEventListener('click', () => openFeaturePage(card.link.replace('#', '')));
+        cardElement.addEventListener('click', () => openFeaturePage(card.link.replace('#', ''), card.title));
         container.appendChild(cardElement);
         if (typeof applyLiquidGlass !== 'undefined') {
             applyLiquidGlass(cardElement, { intensity: 'normal' });
@@ -137,13 +133,7 @@ function renderCards(cards) {
     });
 }
 
-function openFeaturePage(pageName) {
-    const pages = ['schedule', 'map', 'lostfound', 'suggest', 'homework', 'album', 'phone', 'calendar'];
-    pages.forEach(p => {
-        const el = document.getElementById(p + 'Page');
-        if (el) el.style.display = 'none';
-    });
-
+function openFeaturePage(pageName, pageTitle) {
     const hero = document.getElementById('heroSection');
     const cards = document.getElementById('cardsSection');
     if (hero) hero.style.display = 'none';
@@ -152,19 +142,42 @@ function openFeaturePage(pageName) {
     const backBtn = document.getElementById('backBtn');
     if (backBtn) backBtn.style.display = 'flex';
 
-    const targetPage = document.getElementById(pageName + 'Page');
-    if (targetPage) {
-        targetPage.style.display = 'block';
-        initFeaturePage(pageName);
-    }
+    const windowContainer = document.getElementById('windowContainer') || createWindowContainer();
+    windowContainer.innerHTML = '';
+
+    const windowEl = document.createElement('swift-window');
+    windowEl.setAttribute('title', pageTitle || '功能');
+    windowEl.setAttribute('width', '85');
+    windowEl.setAttribute('height', '70');
+    windowEl.style.position = 'fixed';
+    windowEl.style.top = '10%';
+    windowEl.style.left = '7.5%';
+    windowEl.style.zIndex = '2000';
+
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'window-content';
+    contentDiv.id = 'windowContent';
+    contentDiv.style.cssText = 'padding:15px;height:100%;overflow-y:auto;color:#333;';
+
+    windowEl.appendChild(contentDiv);
+    windowContainer.appendChild(windowEl);
+
+    windowEl.shadowRoot.querySelector('div[oval][id="close"]').addEventListener('click', closeFeaturePage);
+
+    initFeaturePage(pageName, contentDiv);
+}
+
+function createWindowContainer() {
+    const container = document.createElement('div');
+    container.id = 'windowContainer';
+    container.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;z-index:2000;';
+    document.body.appendChild(container);
+    return container;
 }
 
 function closeFeaturePage() {
-    const pages = ['schedule', 'map', 'lostfound', 'suggest', 'homework', 'album', 'phone', 'calendar'];
-    pages.forEach(p => {
-        const el = document.getElementById(p + 'Page');
-        if (el) el.style.display = 'none';
-    });
+    const windowContainer = document.getElementById('windowContainer');
+    if (windowContainer) windowContainer.innerHTML = '';
 
     const hero = document.getElementById('heroSection');
     const cards = document.getElementById('cardsSection');
@@ -175,79 +188,93 @@ function closeFeaturePage() {
     if (backBtn) backBtn.style.display = 'none';
 }
 
-function initFeaturePage(page) {
+function initFeaturePage(page, container) {
+    container.innerHTML = '';
     switch(page) {
-        case 'schedule': initSchedule(); break;
-        case 'map': initMap(); break;
-        case 'lostfound': initLostFound(); break;
-        case 'suggest': initSuggest(); break;
-        case 'homework': initHomework(); break;
-        case 'album': initAlbum(); break;
-        case 'phone': initPhone(); break;
-        case 'calendar': initCalendar(); break;
+        case 'schedule': initSchedule(container); break;
+        case 'map': initMap(container); break;
+        case 'lostfound': initLostFound(container); break;
+        case 'suggest': initSuggest(container); break;
+        case 'homework': initHomework(container); break;
+        case 'album': initAlbum(container); break;
+        case 'phone': initPhone(container); break;
+        case 'calendar': initCalendar(container); break;
     }
 }
 
-function initSchedule() {
-    const tbody = document.getElementById('scheduleTableBody');
-    if (!tbody) return;
-    tbody.innerHTML = '';
+function initSchedule(container) {
+    container.innerHTML = `
+        <h4 style="color:#333;margin-bottom:15px;font-size:16px;">作息时间表</h4>
+        <table style="width:100%;border-collapse:collapse;font-size:14px;">
+            <thead><tr style="background:rgba(0,0,0,0.05);"><th style="padding:10px;text-align:left;">时间段</th><th style="padding:10px;text-align:left;">内容</th></tr></thead>
+            <tbody id="scheduleTableBody"></tbody>
+        </table>
+    `;
+    const tbody = container.querySelector('#scheduleTableBody');
     scheduleData.forEach(item => {
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${item.time}</td><td>${item.event}</td>`;
+        tr.style.borderBottom = '1px solid rgba(0,0,0,0.1)';
+        tr.innerHTML = `<td style="padding:10px;">${item.time}</td><td style="padding:10px;">${item.event}</td>`;
         tbody.appendChild(tr);
     });
 }
 
-function initMap() {
-    const grid = document.getElementById('mapGrid');
-    if (!grid) return;
-    grid.innerHTML = '';
+function initMap(container) {
+    container.innerHTML = `
+        <h4 style="color:#333;margin-bottom:15px;font-size:16px;">校园地图</h4>
+        <div class="map-grid" id="mapGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;"></div>
+    `;
+    const grid = container.querySelector('#mapGrid');
     mapData.forEach(item => {
         const div = document.createElement('div');
         div.className = 'map-item';
+        div.style.cssText = 'background:rgba(255,255,255,0.8);border-radius:10px;padding:15px;text-align:center;';
         div.innerHTML = `
-            <div class="icon">${item.icon}</div>
-            <div class="name">${item.name}</div>
-            <div class="location">${item.location}</div>
+            <div class="icon" style="font-size:28px;margin-bottom:8px;">${item.icon}</div>
+            <div class="name" style="font-weight:500;margin-bottom:4px;">${item.name}</div>
+            <div class="location" style="font-size:12px;opacity:0.7;">${item.location}</div>
         `;
         grid.appendChild(div);
     });
 }
 
-function initLostFound() {
-    const list = document.getElementById('lostfoundList');
-    if (!list) return;
-    list.innerHTML = '';
+function initLostFound(container) {
+    container.innerHTML = `
+        <h4 style="color:#333;margin-bottom:15px;font-size:16px;">失物招领</h4>
+        <button class="action-btn" id="addLostFoundBtn" style="background:#007aff;color:white;border:none;padding:10px 20px;border-radius:8px;margin-bottom:15px;cursor:pointer;width:100%;">发布失物/招领</button>
+        <div class="lostfound-list" id="lostfoundList"></div>
+    `;
+    const list = container.querySelector('#lostfoundList');
     lostFoundList.forEach(item => {
         const div = document.createElement('div');
         div.className = 'lostfound-item';
+        div.style.cssText = 'background:rgba(255,255,255,0.8);border-radius:10px;padding:12px;margin-bottom:10px;';
         div.innerHTML = `
-            <span class="type ${item.type}">${item.type === 'lost' ? '寻物' : '招领'}</span>
-            <div class="title">${item.title}</div>
-            <div class="desc">${item.desc}</div>
-            <div class="time">${item.time}</div>
+            <span class="type ${item.type}" style="display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;margin-bottom:8px;background:${item.type === 'lost' ? 'rgba(244,67,54,0.3)' : 'rgba(76,175,80,0.3)'};">${item.type === 'lost' ? '寻物' : '招领'}</span>
+            <div class="title" style="font-weight:500;margin-bottom:4px;">${item.title}</div>
+            <div class="desc" style="font-size:13px;opacity:0.8;margin-bottom:6px;">${item.desc}</div>
+            <div class="time" style="font-size:11px;opacity:0.5;">${item.time}</div>
         `;
         list.appendChild(div);
     });
 
-    document.getElementById('addLostFoundBtn').onclick = showAddLostFoundModal;
+    container.querySelector('#addLostFoundBtn').onclick = () => showAddLostFoundModal(container);
 }
 
-function showAddLostFoundModal() {
+function showAddLostFoundModal(container) {
     const modal = document.getElementById('modal');
     const modalBody = document.getElementById('modalBody');
     modal.style.display = 'flex';
     modalBody.innerHTML = `
-        <h3>发布失物/招领</h3>
-        <div class="modal-form">
-            <div class="type-select">
-                <label><input type="radio" name="lfType" value="lost" checked><span>寻物</span></label>
-                <label><input type="radio" name="lfType" value="found"><span>招领</span></label>
+        <h3 style="margin-bottom:20px;text-align:center;">发布失物/招领</h3>
+        <div class="modal-form" style="display:flex;flex-direction:column;gap:12px;">
+            <div class="type-select" style="display:flex;gap:10px;">
+                <label style="flex:1;text-align:center;padding:10px;border-radius:10px;background:rgba(0,0,0,0.05);cursor:pointer;"><input type="radio" name="lfType" value="lost" checked style="display:none;"><span>寻物</span></label>
+                <label style="flex:1;text-align:center;padding:10px;border-radius:10px;background:rgba(0,0,0,0.05);cursor:pointer;"><input type="radio" name="lfType" value="found" style="display:none;"><span>招领</span></label>
             </div>
-            <input type="text" id="lfTitle" placeholder="物品名称">
-            <textarea id="lfDesc" placeholder="详细描述"></textarea>
-            <button class="action-btn" onclick="addLostFound()">发布</button>
+            <input type="text" id="lfTitle" placeholder="物品名称" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:12px;color:white;">
+            <textarea id="lfDesc" placeholder="详细描述" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:12px;color:white;min-height:80px;resize:vertical;"></textarea>
+            <button class="action-btn" onclick="addLostFound()" style="background:#007aff;color:white;border:none;padding:12px;border-radius:8px;cursor:pointer;">发布</button>
         </div>
     `;
 }
@@ -263,26 +290,41 @@ function addLostFound() {
 
     lostFoundList.unshift({ type, title, desc, time: timeStr });
     closeModal();
-    initLostFound();
+    const contentDiv = document.getElementById('windowContent');
+    if (contentDiv) initLostFound(contentDiv);
 }
 
-function initSuggest() {
-    const list = document.getElementById('suggestList');
-    if (!list) return;
-    list.innerHTML = '';
+function initSuggest(container) {
+    container.innerHTML = `
+        <h4 style="color:#333;margin-bottom:15px;font-size:16px;">匿名建议箱</h4>
+        <div class="suggest-form" style="margin-bottom:20px;">
+            <select id="suggestType" style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.1);margin-bottom:10px;background:white;">
+                <option value="canteen">食堂建议</option>
+                <option value="hygiene">卫生建议</option>
+                <option value="facility">设施建议</option>
+                <option value="other">其他</option>
+            </select>
+            <textarea id="suggestContent" placeholder="请输入您的建议..." style="width:100%;min-height:80px;padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.1);resize:vertical;box-sizing:border-box;background:white;"></textarea>
+            <button id="submitSuggestBtn" style="width:100%;padding:12px;background:#007aff;color:white;border:none;border-radius:8px;cursor:pointer;margin-top:10px;">提交建议</button>
+        </div>
+        <h4 style="color:#333;margin-bottom:10px;font-size:14px;">往期建议</h4>
+        <div class="suggest-list" id="suggestList"></div>
+    `;
+    const list = container.querySelector('#suggestList');
     suggestList.forEach(item => {
         const typeMap = { canteen: '食堂', hygiene: '卫生', facility: '设施', other: '其他' };
         const div = document.createElement('div');
         div.className = 'suggest-item';
+        div.style.cssText = 'background:rgba(255,255,255,0.8);border-radius:10px;padding:12px;margin-bottom:10px;';
         div.innerHTML = `
-            <span class="suggest-type-badge">${typeMap[item.type] || '其他'}</span>
-            <div class="content">${item.content}</div>
-            <div class="time">${item.time}</div>
+            <span class="suggest-type-badge" style="display:inline-block;padding:3px 10px;border-radius:10px;font-size:11px;background:rgba(0,122,255,0.2);margin-right:10px;">${typeMap[item.type] || '其他'}</span>
+            <div class="content" style="font-size:13px;line-height:1.5;margin:10px 0;">${item.content}</div>
+            <div class="time" style="font-size:11px;opacity:0.5;">${item.time}</div>
         `;
         list.appendChild(div);
     });
 
-    document.getElementById('submitSuggestBtn').onclick = submitSuggest;
+    container.querySelector('#submitSuggestBtn').onclick = submitSuggest;
 }
 
 function submitSuggest() {
@@ -295,80 +337,105 @@ function submitSuggest() {
 
     suggestList.unshift({ type, content, time: timeStr });
     document.getElementById('suggestContent').value = '';
-    initSuggest();
+    const contentDiv = document.getElementById('windowContent');
+    if (contentDiv) initSuggest(contentDiv);
 }
 
-function initHomework() {
-    const list = document.getElementById('homeworkList');
+function initHomework(container) {
+    container.innerHTML = `
+        <h4 style="color:#333;margin-bottom:15px;font-size:16px;">作业汇总</h4>
+        <select id="gradeSelect" onchange="initHomeworkInWindow()" style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.1);margin-bottom:15px;background:white;">
+            <option value="1">一年级</option>
+            <option value="2">二年级</option>
+            <option value="3">三年级</option>
+        </select>
+        <div class="homework-list" id="homeworkList"></div>
+    `;
+    updateHomeworkList(container);
+}
+
+function updateHomeworkList(container) {
+    const grade = container.querySelector('#gradeSelect')?.value || '1';
+    const list = container.querySelector('#homeworkList');
     if (!list) return;
-
-    const grade = document.getElementById('gradeSelect').value;
     const homeworks = homeworkData[grade] || [];
-
-    list.innerHTML = '<select id="gradeSelect" onchange="initHomework()"><option value="1">一年级</option><option value="2">二年级</option><option value="3">三年级</option></select>';
-    document.getElementById('gradeSelect').value = grade;
-
+    list.innerHTML = '';
     homeworks.forEach(item => {
         const div = document.createElement('div');
         div.className = 'homework-item';
+        div.style.cssText = 'background:rgba(255,255,255,0.8);border-radius:10px;padding:12px;margin-bottom:10px;border-left:4px solid #007aff;';
         div.innerHTML = `
-            <div class="subject">${item.subject}</div>
-            <div class="content">${item.content}</div>
-            <div class="teacher">${item.teacher}</div>
+            <div class="subject" style="font-weight:500;margin-bottom:5px;">${item.subject}</div>
+            <div class="content" style="font-size:13px;opacity:0.9;margin-bottom:5px;">${item.content}</div>
+            <div class="teacher" style="font-size:11px;opacity:0.5;">${item.teacher}</div>
         `;
         list.appendChild(div);
     });
 }
 
-function initAlbum() {
-    const grid = document.getElementById('albumGrid');
-    if (!grid) return;
-    grid.innerHTML = '';
+window.initHomeworkInWindow = function() {
+    const contentDiv = document.getElementById('windowContent');
+    if (contentDiv) updateHomeworkList(contentDiv);
+};
+
+function initAlbum(container) {
+    container.innerHTML = `
+        <h4 style="color:#333;margin-bottom:15px;font-size:16px;">班级相册</h4>
+        <div class="album-grid" id="albumGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;"></div>
+    `;
+    const grid = container.querySelector('#albumGrid');
     albumData.forEach(item => {
         const div = document.createElement('div');
         div.className = 'album-item';
+        div.style.cssText = 'background:rgba(255,255,255,0.8);border-radius:10px;overflow:hidden;';
         div.innerHTML = `
-            <div class="album-img">📷</div>
-            <div class="album-info">
-                <div class="album-title">${item.title}</div>
-                <div class="album-date">${item.date}</div>
+            <div class="album-img" style="width:100%;height:80px;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-size:30px;">📷</div>
+            <div class="album-info" style="padding:10px;">
+                <div class="album-title" style="font-size:13px;font-weight:500;margin-bottom:4px;">${item.title}</div>
+                <div class="album-date" style="font-size:11px;opacity:0.5;">${item.date}</div>
             </div>
         `;
         grid.appendChild(div);
     });
 }
 
-function initPhone() {
-    const list = document.getElementById('phoneList');
-    if (!list) return;
-    list.innerHTML = '';
+function initPhone(container) {
+    container.innerHTML = `
+        <h4 style="color:#333;margin-bottom:15px;font-size:16px;">校园电话</h4>
+        <div class="phone-list" id="phoneList" style="display:flex;flex-direction:column;gap:10px;"></div>
+    `;
+    const list = container.querySelector('#phoneList');
     phoneData.forEach(item => {
         const div = document.createElement('div');
         div.className = 'phone-item';
+        div.style.cssText = 'background:rgba(255,255,255,0.8);border-radius:10px;padding:15px;display:flex;justify-content:space-between;align-items:center;';
         div.innerHTML = `
             <div class="info">
-                <div class="name">${item.name}</div>
-                <div class="number">${item.number}</div>
+                <div class="name" style="font-weight:500;margin-bottom:4px;">${item.name}</div>
+                <div class="number" style="font-size:14px;opacity:0.8;">${item.number}</div>
             </div>
-            <a href="tel:${item.number}" class="call-btn">
-                <img src="assets/icons/HarmonyOS_Icons/ic_call_1_dial.svg" alt="拨打">
+            <a href="tel:${item.number}" style="background:rgba(76,175,80,0.3);border:none;border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;text-decoration:none;">
+                <img src="assets/icons/HarmonyOS_Icons/ic_call_1_dial.svg" alt="拨打" style="width:18px;height:18px;">
             </a>
         `;
         list.appendChild(div);
     });
 }
 
-function initCalendar() {
-    const list = document.getElementById('calendarList');
-    if (!list) return;
-    list.innerHTML = '';
+function initCalendar(container) {
+    container.innerHTML = `
+        <h4 style="color:#333;margin-bottom:15px;font-size:16px;">活动日历</h4>
+        <div class="calendar-list" id="calendarList" style="display:flex;flex-direction:column;gap:12px;"></div>
+    `;
+    const list = container.querySelector('#calendarList');
     calendarData.forEach(item => {
         const div = document.createElement('div');
         div.className = 'calendar-item';
+        div.style.cssText = 'background:rgba(255,255,255,0.8);border-radius:10px;padding:12px;border-left:4px solid #00bcd4;';
         div.innerHTML = `
-            <div class="date">${item.date}</div>
-            <div class="event-title">${item.title}</div>
-            <div class="event-desc">${item.desc}</div>
+            <div class="date" style="font-size:11px;color:#00bcd4;font-weight:500;margin-bottom:4px;">${item.date}</div>
+            <div class="event-title" style="font-weight:500;margin-bottom:4px;">${item.title}</div>
+            <div class="event-desc" style="font-size:12px;opacity:0.8;">${item.desc}</div>
         `;
         list.appendChild(div);
     });
