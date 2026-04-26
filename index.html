@@ -22,9 +22,20 @@
 
         <main class="app-content">
             <section class="hero-section" id="heroSection">
-                <div class="glass-card">
-                    <h2>欢迎使用 NovaCampus Service</h2>
-                    <p>为校园生活提供便捷服务</p>
+                <div class="glass-card hero-card">
+                    <div class="weather-widget">
+                        <div class="weather-icon">
+                            <img src="assets/icons/HarmonyOS_Icons/ic_public_calendar_filled.svg" style="width:32px;height:32px;filter:invert(1);opacity:0.9;">
+                        </div>
+                        <div class="weather-info">
+                            <div class="weather-temp">24°C</div>
+                            <div class="weather-desc">晴</div>
+                        </div>
+                    </div>
+                    <div class="hero-text">
+                        <h2>欢迎使用 NovaCampus Service</h2>
+                        <p>为校园生活提供便捷服务</p>
+                    </div>
                 </div>
             </section>
 
@@ -112,29 +123,43 @@
                     <div class="calendar-list" id="calendarList"></div>
                 </div>
             </section>
+
+            <section class="feature-page" id="communityPage" style="display:none;">
+                <h3>社区论坛</h3>
+                <div class="feature-content">
+                    <div class="community-list" id="communityList"></div>
+                </div>
+            </section>
+
+            <section class="feature-page" id="aboutPage" style="display:none;">
+                <h3>关于我们</h3>
+                <div class="feature-content">
+                    <div class="about-content" id="aboutContent"></div>
+                </div>
+            </section>
         </main>
     </div>
 
     <nav class="bottom-nav">
         <a href="#" class="nav-item active" data-page="home">
-            <img src="assets/icons/HarmonyOS_Icons/ic_contacts_card_single.svg" alt="首页">
-            <span>首页</span>
+            <img src="assets/icons/HarmonyOS_Icons/ic_public_settings_filled.svg" alt="功能">
+            <span>功能</span>
         </a>
         <a href="#" class="nav-item" data-page="search">
-            <img src="assets/icons/HarmonyOS_Icons/ic_brightness_plus.svg" alt="搜索">
+            <img src="assets/icons/HarmonyOS_Icons/ic_public_search.svg" alt="搜索">
             <span>搜索</span>
         </a>
-        <a href="#" class="nav-item" data-page="add">
-            <img src="assets/icons/HarmonyOS_Icons/ic_addcontact.svg" alt="添加">
-            <span>添加</span>
-        </a>
         <a href="#" class="nav-item" data-page="notice">
-            <img src="assets/icons/HarmonyOS_Icons/ic_contacts_incoming_filled.svg" alt="通知">
+            <img src="assets/icons/HarmonyOS_Icons/ic_public_ring.svg" alt="通知">
             <span>通知</span>
         </a>
-        <a href="#" class="nav-item" data-page="profile">
-            <img src="assets/icons/HarmonyOS_Icons/ic_addcontact_filled.svg" alt="我的">
-            <span>我的</span>
+        <a href="#" class="nav-item" data-page="community">
+            <img src="assets/icons/HarmonyOS_Icons/ic_public_notes.svg" alt="社区">
+            <span>社区</span>
+        </a>
+        <a href="#" class="nav-item" data-page="about">
+            <img src="assets/icons/HarmonyOS_Icons/ic_public_contacts.svg" alt="关于">
+            <span>关于</span>
         </a>
     </nav>
 
