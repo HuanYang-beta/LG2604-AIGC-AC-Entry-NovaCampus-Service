@@ -359,6 +359,7 @@ function initFeaturePage(page, container) {
         case 'album': initAlbum(container); break;
         case 'phone': initPhone(container); break;
         case 'calendar': initCalendar(container); break;
+        case 'appointment': initAppointment(container); break;
         case 'community': initCommunity(container); break;
         case 'about': initAbout(container); break;
     }
@@ -619,16 +620,20 @@ function initCommunity(container) {
                 <input type="text" id="communitySearchInput" placeholder="搜索帖子..." class="liquid-glass-direct intensity-subtle" style="width:100%;padding:10px 15px 10px 45px;border-radius:20px;border:none;color:white;font-size:14px;box-sizing:border-box;">
             </div>
         </div>
-        <div class="community-tabs" style="display:flex;gap:10px;margin-bottom:20px;overflow-x:auto;padding-bottom:5px;">
-            <button class="community-tab active" data-tab="all" style="padding:8px 16px;border-radius:20px;border:none;background:linear-gradient(135deg,rgba(102,126,234,0.6),rgba(118,75,162,0.6));color:white;cursor:pointer;white-space:nowrap;font-size:13px;position:relative;overflow:hidden;">全部</button>
-            <button class="community-tab" data-tab="study" style="padding:8px 16px;border-radius:20px;border:none;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);cursor:pointer;white-space:nowrap;font-size:13px;position:relative;overflow:hidden;">学习</button>
-            <button class="community-tab" data-tab="life" style="padding:8px 16px;border-radius:20px;border:none;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);cursor:pointer;white-space:nowrap;font-size:13px;position:relative;overflow:hidden;">生活</button>
-            <button class="community-tab" data-tab="activity" style="padding:8px 16px;border-radius:20px;border:none;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);cursor:pointer;white-space:nowrap;font-size:13px;position:relative;overflow:hidden;">活动</button>
+        <div class="community-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;">
+            <h5 style="color:white;margin:0;font-size:14px;font-weight:500;">话题</h5>
+            <button class="action-btn" id="createPostBtn" style="background:linear-gradient(135deg,rgba(102,126,234,0.8),rgba(118,75,162,0.8));color:white;border:none;padding:8px 16px;border-radius:20px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;">
+                <img src="assets/icons/HarmonyOS_Icons/ic_public_add.svg" style="width:16px;height:16px;filter:invert(1);">发布
+            </button>
+        </div>
+        <div class="community-tabs" style="display:flex;gap:8px;margin-bottom:15px;overflow-x:auto;padding-bottom:5px;">
+            <button class="community-tab active" data-tab="all" style="padding:6px 12px;border-radius:16px;border:none;background:linear-gradient(135deg,rgba(102,126,234,0.6),rgba(118,75,162,0.6));color:white;cursor:pointer;white-space:nowrap;font-size:12px;position:relative;overflow:hidden;">全部</button>
+            <button class="community-tab" data-tab="study" style="padding:6px 12px;border-radius:16px;border:none;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);cursor:pointer;white-space:nowrap;font-size:12px;position:relative;overflow:hidden;">#学习</button>
+            <button class="community-tab" data-tab="life" style="padding:6px 12px;border-radius:16px;border:none;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);cursor:pointer;white-space:nowrap;font-size:12px;position:relative;overflow:hidden;">#生活</button>
+            <button class="community-tab" data-tab="activity" style="padding:6px 12px;border-radius:16px;border:none;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);cursor:pointer;white-space:nowrap;font-size:12px;position:relative;overflow:hidden;">#活动</button>
+            <button class="community-tab" data-tab="confession" style="padding:6px 12px;border-radius:16px;border:none;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);cursor:pointer;white-space:nowrap;font-size:12px;position:relative;overflow:hidden;">#表白墙</button>
         </div>
         <div class="community-posts" id="communityPosts"></div>
-        <button class="action-btn" id="createPostBtn" style="background:linear-gradient(135deg,rgba(102,126,234,0.8),rgba(118,75,162,0.8));color:white;border:none;padding:14px 24px;border-radius:25px;font-size:14px;cursor:pointer;width:100%;margin-top:20px;display:flex;align-items:center;justify-content:center;gap:8px;position:relative;overflow:hidden;">
-            <img src="assets/icons/HarmonyOS_Icons/ic_public_add.svg" style="width:18px;height:18px;filter:invert(1);">发布新帖
-        </button>
     `;
 
     const postsContainer = container.querySelector('#communityPosts');
@@ -646,8 +651,8 @@ function initCommunity(container) {
             return;
         }
         posts.forEach(post => {
-            const categoryMap = { study: '学习', life: '生活', activity: '活动' };
-            const categoryColors = { study: '#4CAF50', life: '#FF9800', activity: '#E91E63' };
+            const categoryMap = { study: '学习', life: '生活', activity: '活动', confession: '表白墙' };
+            const categoryColors = { study: '#4CAF50', life: '#FF9800', activity: '#E91E63', confession: '#9C27B0' };
             const postDiv = document.createElement('div');
             postDiv.className = 'community-post liquid-glass-card';
             postDiv.style.cssText = 'border-radius:16px;padding:0;margin-bottom:15px;cursor:pointer;position:relative;overflow:hidden;';
@@ -662,7 +667,7 @@ function initCommunity(container) {
                             <div style="color:white;font-weight:500;font-size:14px;">${post.author}</div>
                             <div style="color:rgba(255,255,255,0.5);font-size:11px;">${post.time}</div>
                         </div>
-                        <span class="post-category" style="padding:4px 10px;border-radius:10px;font-size:11px;background:${categoryColors[post.category] || '#667eea'};color:white;">${categoryMap[post.category] || '全部'}</span>
+                        <span class="post-category" style="padding:4px 10px;border-radius:10px;font-size:11px;background:${categoryColors[post.category] || '#667eea'};color:white;">#${categoryMap[post.category] || '全部'}</span>
                     </div>
                     <div class="post-title" style="color:white;font-weight:500;font-size:15px;margin-bottom:8px;">${post.title}</div>
                     <div class="post-content" style="color:rgba(255,255,255,0.8);font-size:13px;line-height:1.5;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${post.content}</div>
@@ -730,8 +735,8 @@ function initCommunity(container) {
         const post = communityData.find(p => p.id === postId);
         if (!post) return;
 
-        const categoryMap = { study: '学习', life: '生活', activity: '活动' };
-        const categoryColors = { study: '#4CAF50', life: '#FF9800', activity: '#E91E63' };
+        const categoryMap = { study: '学习', life: '生活', activity: '活动', confession: '表白墙' };
+        const categoryColors = { study: '#4CAF50', life: '#FF9800', activity: '#E91E63', confession: '#9C27B0' };
 
         const detailPage = document.createElement('div');
         detailPage.className = 'post-detail-page';
@@ -755,7 +760,7 @@ function initCommunity(container) {
                                 <div style="font-weight:500;font-size:15px;">${post.author}</div>
                                 <div style="font-size:12px;opacity:0.6;">${post.time}</div>
                             </div>
-                            <span class="post-category" style="padding:4px 12px;border-radius:12px;font-size:12px;background:${categoryColors[post.category] || '#667eea'};">${categoryMap[post.category] || '全部'}</span>
+                            <span class="post-category" style="padding:4px 12px;border-radius:12px;font-size:12px;background:${categoryColors[post.category] || '#667eea'};">#${categoryMap[post.category] || '全部'}</span>
                         </div>
                         <h2 style="font-size:18px;margin-bottom:12px;">${post.title}</h2>
                         <p style="font-size:14px;line-height:1.6;opacity:0.9;margin-bottom:20px;">${post.content}</p>
@@ -772,9 +777,12 @@ function initCommunity(container) {
                                 <img src="assets/icons/HarmonyOS_Icons/ic_public_comments.svg" style="width:16px;height:16px;filter:invert(1);opacity:0.8;"> 评论列表
                             </h4>
                             <div class="comments-list" id="detailCommentsList" style="max-height:200px;overflow-y:auto;margin-bottom:15px;"></div>
-                            <div class="comment-input" style="display:flex;gap:10px;">
-                                <input type="text" id="commentInput" placeholder="写下你的评论..." class="liquid-glass-direct intensity-subtle" style="flex:1;padding:12px 15px;border-radius:25px;border:none;color:white;font-size:14px;">
-                                <button id="submitCommentBtn" style="padding:12px 20px;border-radius:25px;border:none;background:linear-gradient(135deg,rgba(102,126,234,0.8),rgba(118,75,162,0.8));color:white;font-size:14px;cursor:pointer;">发送</button>
+                            <div class="comment-input" style="display:flex;flex-direction:column;gap:10px;">
+                                <input type="text" id="commentAuthor" placeholder="署名（可选）" class="liquid-glass-direct intensity-subtle" style="padding:10px 15px;border-radius:20px;border:none;color:white;font-size:13px;">
+                                <div style="display:flex;gap:10px;">
+                                    <input type="text" id="commentInput" placeholder="写下你的评论..." class="liquid-glass-direct intensity-subtle" style="flex:1;padding:12px 15px;border-radius:25px;border:none;color:white;font-size:14px;">
+                                    <button id="submitCommentBtn" style="padding:12px 20px;border-radius:25px;border:none;background:linear-gradient(135deg,rgba(102,126,234,0.8),rgba(118,75,162,0.8));color:white;font-size:14px;cursor:pointer;">发送</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -816,27 +824,34 @@ function initCommunity(container) {
 
         const submitCommentBtn = detailPage.querySelector('#submitCommentBtn');
         const commentInput = detailPage.querySelector('#commentInput');
+        const commentAuthorInput = detailPage.querySelector('#commentAuthor');
 
         if (typeof applyLiquidGlass !== 'undefined' && commentInput) {
             applyLiquidGlass(commentInput, { intensity: 'subtle' });
+        }
+
+        if (typeof applyLiquidGlass !== 'undefined' && commentAuthorInput) {
+            applyLiquidGlass(commentAuthorInput, { intensity: 'subtle' });
         }
 
         submitCommentBtn.addEventListener('click', () => {
             const content = commentInput.value.trim();
             if (!content) return;
 
+            const author = commentAuthorInput.value.trim() || '匿名用户';
             const timeStr = '刚刚';
 
-            post.commentsList.unshift({ author: '我', content, time: timeStr });
+            post.commentsList.unshift({ author: author, content, time: timeStr });
             post.comments++;
 
             commentInput.value = '';
+            commentAuthorInput.value = '';
             renderPosts(getFilteredPosts());
 
             const newComment = document.createElement('div');
             newComment.style.cssText = 'background:rgba(255,255,255,0.1);border-radius:12px;padding:12px;margin-bottom:10px;';
             newComment.innerHTML = `
-                <div style="font-weight:500;font-size:13px;margin-bottom:4px;">我</div>
+                <div style="font-weight:500;font-size:13px;margin-bottom:4px;">${author}</div>
                 <div style="font-size:13px;opacity:0.9;">${content}</div>
                 <div style="font-size:11px;opacity:0.5;margin-top:4px;">刚刚</div>
             `;
@@ -874,22 +889,27 @@ function initCommunity(container) {
                 <h3 style="margin-bottom:20px;text-align:center;">发布新帖</h3>
                 <div class="modal-form" style="display:flex;flex-direction:column;gap:15px;">
                     <div>
-                        <label style="display:block;font-size:13px;margin-bottom:8px;opacity:0.8;">选择分类</label>
-                        <div class="category-select" style="display:flex;gap:10px;">
-                            <label class="cat-label" style="flex:1;text-align:center;padding:12px;border-radius:12px;background:rgba(255,255,255,0.1);cursor:pointer;transition:all 0.2s;border:2px solid transparent;">
+                        <label style="display:block;font-size:13px;margin-bottom:8px;opacity:0.8;">选择话题（可选）</label>
+                        <div class="category-select" style="display:flex;gap:8px;">
+                            <label class="cat-label" style="flex:1;text-align:center;padding:10px;border-radius:12px;background:rgba(255,255,255,0.1);cursor:pointer;transition:all 0.2s;border:2px solid transparent;">
                                 <input type="radio" name="postCategory" value="study" style="display:none;">
-                                <span style="display:block;font-size:14px;">📚 学习</span>
+                                <span style="display:block;font-size:13px;"># 学习</span>
                             </label>
-                            <label class="cat-label" style="flex:1;text-align:center;padding:12px;border-radius:12px;background:rgba(255,255,255,0.1);cursor:pointer;transition:all 0.2s;border:2px solid transparent;">
+                            <label class="cat-label" style="flex:1;text-align:center;padding:10px;border-radius:12px;background:rgba(255,255,255,0.1);cursor:pointer;transition:all 0.2s;border:2px solid transparent;">
                                 <input type="radio" name="postCategory" value="life" style="display:none;">
-                                <span style="display:block;font-size:14px;">🍜 生活</span>
+                                <span style="display:block;font-size:13px;"># 生活</span>
                             </label>
-                            <label class="cat-label" style="flex:1;text-align:center;padding:12px;border-radius:12px;background:rgba(255,255,255,0.1);cursor:pointer;transition:all 0.2s;border:2px solid transparent;">
+                            <label class="cat-label" style="flex:1;text-align:center;padding:10px;border-radius:12px;background:rgba(255,255,255,0.1);cursor:pointer;transition:all 0.2s;border:2px solid transparent;">
                                 <input type="radio" name="postCategory" value="activity" style="display:none;">
-                                <span style="display:block;font-size:14px;">🎉 活动</span>
+                                <span style="display:block;font-size:13px;"># 活动</span>
+                            </label>
+                            <label class="cat-label" style="flex:1;text-align:center;padding:10px;border-radius:12px;background:rgba(255,255,255,0.1);cursor:pointer;transition:all 0.2s;border:2px solid transparent;">
+                                <input type="radio" name="postCategory" value="confession" style="display:none;">
+                                <span style="display:block;font-size:13px;"># 表白墙</span>
                             </label>
                         </div>
                     </div>
+                    <input type="text" id="postAuthor" placeholder="署名（可选）" class="liquid-glass-direct intensity-subtle" style="background:rgba(255,255,255,0.1);border:none;border-radius:12px;padding:12px;color:white;font-size:14px;">
                     <input type="text" id="postTitle" placeholder="帖子标题" class="liquid-glass-direct intensity-subtle" style="background:rgba(255,255,255,0.1);border:none;border-radius:12px;padding:12px;color:white;font-size:14px;">
                     <textarea id="postContent" placeholder="分享你的内容..." class="liquid-glass-direct intensity-subtle" style="background:rgba(255,255,255,0.1);border:none;border-radius:12px;padding:12px;color:white;font-size:14px;min-height:120px;resize:vertical;"></textarea>
                     <button id="submitPostBtn" style="background:linear-gradient(135deg,rgba(102,126,234,0.9),rgba(118,75,162,0.9));color:white;border:none;padding:14px;border-radius:12px;cursor:pointer;font-size:14px;font-weight:500;margin-top:5px;">发布帖子</button>
@@ -911,14 +931,11 @@ function initCommunity(container) {
 
         const submitPostBtn = modalBody.querySelector('#submitPostBtn');
         submitPostBtn.addEventListener('click', () => {
-            const category = document.querySelector('input[name="postCategory"]:checked')?.value;
+            const category = document.querySelector('input[name="postCategory"]:checked')?.value || 'life'; // 默认生活话题
+            const author = document.getElementById('postAuthor').value.trim() || '匿名用户'; // 默认匿名用户
             const title = document.getElementById('postTitle').value.trim();
             const content = document.getElementById('postContent').value.trim();
 
-            if (!category) {
-                alert('请选择分类');
-                return;
-            }
             if (!title) {
                 alert('请输入标题');
                 return;
@@ -934,7 +951,7 @@ function initCommunity(container) {
 
             communityData.unshift({
                 id: Date.now(),
-                author: '我',
+                author: author,
                 avatar: randomAvatar,
                 title,
                 content,
@@ -1037,6 +1054,147 @@ function closeModal() {
 
     modalBody.className = 'modal-content';
     modalBody.style.cssText = '';
+}
+
+function initAppointment(container) {
+    container.innerHTML = `
+        <h4 style="color:white;margin-bottom:15px;font-size:16px;">预约服务</h4>
+        <div class="appointment-types" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px;"></div>
+        <div class="appointment-form" style="display:none;margin-top:20px;">
+            <h5 style="color:white;margin-bottom:15px;font-size:14px;">填写预约信息</h5>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+                <input type="text" id="appointmentName" placeholder="姓名" class="liquid-glass-direct intensity-subtle" style="background:rgba(255,255,255,0.1);border:none;border-radius:12px;padding:12px;color:white;font-size:14px;">
+                <input type="text" id="appointmentPhone" placeholder="联系电话" class="liquid-glass-direct intensity-subtle" style="background:rgba(255,255,255,0.1);border:none;border-radius:12px;padding:12px;color:white;font-size:14px;">
+                <input type="date" id="appointmentDate" class="liquid-glass-direct intensity-subtle" style="background:rgba(255,255,255,0.1);border:none;border-radius:12px;padding:12px;color:white;font-size:14px;">
+                <input type="time" id="appointmentTime" class="liquid-glass-direct intensity-subtle" style="background:rgba(255,255,255,0.1);border:none;border-radius:12px;padding:12px;color:white;font-size:14px;">
+                <textarea id="appointmentReason" placeholder="预约原因" class="liquid-glass-direct intensity-subtle" style="background:rgba(255,255,255,0.1);border:none;border-radius:12px;padding:12px;color:white;font-size:14px;min-height:80px;resize:vertical;"></textarea>
+                <button class="action-btn" id="submitAppointmentBtn" style="background:linear-gradient(135deg,rgba(102,126,234,0.8),rgba(118,75,162,0.8));color:white;border:none;padding:12px;border-radius:12px;cursor:pointer;font-size:14px;">提交预约</button>
+            </div>
+        </div>
+        <div class="appointment-history" style="margin-top:20px;">
+            <h5 style="color:white;margin-bottom:15px;font-size:14px;">预约历史</h5>
+            <div class="history-list" id="appointmentHistoryList"></div>
+        </div>
+    `;
+
+    const appointmentTypes = [
+        { id: 'psychology', name: '心理老师', icon: '🧠', description: '心理咨询预约' },
+        { id: 'medical', name: '医务室', icon: '🏥', description: '医疗服务预约' },
+        { id: 'counseling', name: '辅导员', icon: '👨‍🏫', description: '学业辅导预约' },
+        { id: 'library', name: '图书馆', icon: '📚', description: '图书资源预约' }
+    ];
+
+    const typesContainer = container.querySelector('.appointment-types');
+    appointmentTypes.forEach(type => {
+        const typeDiv = document.createElement('div');
+        typeDiv.className = 'appointment-type';
+        typeDiv.style.cssText = 'background:rgba(255,255,255,0.15);border-radius:12px;padding:15px;text-align:center;cursor:pointer;transition:all 0.2s;';
+        typeDiv.innerHTML = `
+            <div style="font-size:32px;margin-bottom:8px;">${type.icon}</div>
+            <div style="font-weight:500;margin-bottom:4px;">${type.name}</div>
+            <div style="font-size:12px;opacity:0.7;">${type.description}</div>
+        `;
+        typeDiv.addEventListener('click', () => {
+            document.querySelectorAll('.appointment-type').forEach(t => t.style.border = 'none');
+            typeDiv.style.border = '2px solid #667eea';
+            
+            const form = container.querySelector('.appointment-form');
+            form.style.display = 'block';
+            form.dataset.type = type.id;
+        });
+        typesContainer.appendChild(typeDiv);
+    });
+
+    const submitBtn = container.querySelector('#submitAppointmentBtn');
+    submitBtn.addEventListener('click', () => {
+        const type = container.querySelector('.appointment-form').dataset.type;
+        const name = document.getElementById('appointmentName').value.trim();
+        const phone = document.getElementById('appointmentPhone').value.trim();
+        const date = document.getElementById('appointmentDate').value;
+        const time = document.getElementById('appointmentTime').value;
+        const reason = document.getElementById('appointmentReason').value.trim();
+
+        if (!type || !name || !phone || !date || !time || !reason) {
+            alert('请填写完整预约信息');
+            return;
+        }
+
+        const appointmentData = {
+            id: Date.now(),
+            type: type,
+            name: name,
+            phone: phone,
+            date: date,
+            time: time,
+            reason: reason,
+            status: 'pending',
+            timeStr: '刚刚'
+        };
+
+        // 模拟保存预约数据
+        alert('预约提交成功！');
+        
+        // 清空表单
+        document.getElementById('appointmentName').value = '';
+        document.getElementById('appointmentPhone').value = '';
+        document.getElementById('appointmentDate').value = '';
+        document.getElementById('appointmentTime').value = '';
+        document.getElementById('appointmentReason').value = '';
+        
+        // 显示预约历史
+        renderAppointmentHistory(container);
+    });
+
+    renderAppointmentHistory(container);
+}
+
+function renderAppointmentHistory(container) {
+    const historyList = container.querySelector('#appointmentHistoryList');
+    
+    // 模拟预约历史数据
+    const historyData = [
+        {
+            id: 1,
+            type: 'psychology',
+            typeName: '心理老师',
+            name: '张三',
+            date: '2026-04-20',
+            time: '14:00',
+            status: 'completed',
+            timeStr: '6天前'
+        },
+        {
+            id: 2,
+            type: 'medical',
+            typeName: '医务室',
+            name: '李四',
+            date: '2026-04-25',
+            time: '10:30',
+            status: 'pending',
+            timeStr: '1天前'
+        }
+    ];
+
+    historyList.innerHTML = '';
+    if (historyData.length === 0) {
+        historyList.innerHTML = '<div style="text-align:center;color:rgba(255,255,255,0.5);padding:20px;">暂无预约记录</div>';
+        return;
+    }
+
+    historyData.forEach(item => {
+        const historyItem = document.createElement('div');
+        historyItem.style.cssText = 'background:rgba(255,255,255,0.15);border-radius:12px;padding:15px;margin-bottom:10px;';
+        historyItem.innerHTML = `
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                <div style="font-weight:500;">${item.typeName}</div>
+                <span style="display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;background:${item.status === 'completed' ? 'rgba(76,175,80,0.3)' : 'rgba(255,152,0,0.3)'};">${item.status === 'completed' ? '已完成' : '待处理'}</span>
+            </div>
+            <div style="font-size:13px;opacity:0.8;margin-bottom:4px;">姓名：${item.name}</div>
+            <div style="font-size:13px;opacity:0.8;margin-bottom:4px;">时间：${item.date} ${item.time}</div>
+            <div style="font-size:11px;opacity:0.5;">${item.timeStr}</div>
+        `;
+        historyList.appendChild(historyItem);
+    });
 }
 
 window.addEventListener('DOMContentLoaded', function() {
