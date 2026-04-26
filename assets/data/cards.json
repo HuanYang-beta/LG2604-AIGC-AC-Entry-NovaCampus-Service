@@ -55,6 +55,13 @@
       "description": "校园活动、大扫除安排",
       "icon": "assets/icons/HarmonyOS_Icons/ic_public_calendar_filled.svg",
       "link": "#calendar"
+    },
+    {
+      "id": "card-9",
+      "title": "预约服务",
+      "description": "心理老师、医务室等预约",
+      "icon": "assets/icons/HarmonyOS_Icons/ic_public_calendar.svg",
+      "link": "#appointment"
     }
   ]
 }
