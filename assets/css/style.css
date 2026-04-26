@@ -1,3 +1,4 @@
+/* 字体定义 */
 @font-face {
     font-family: 'HarmonyOS Sans SC';
     src: url('../fonts/HarmonyOS Sans/HarmonyOS_Sans_SC/HarmonyOS_Sans_SC_Regular.ttf') format('truetype');
@@ -19,12 +20,14 @@
     font-style: normal;
 }
 
+/* 全局重置 */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* 主体样式 */
 body {
     font-family: 'HarmonyOS Sans SC', sans-serif;
     background: url('../imgs/bg1.jpg') no-repeat center center;
@@ -39,6 +42,7 @@ body {
     padding: 20px;
 }
 
+/* 主容器 - 液态玻璃效果 */
 .liquid-glass-container {
     width: 100%;
     max-width: 1200px;
@@ -99,7 +103,6 @@ body {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
-    padding-bottom: 100px;
 }
 
 .hero-section {
@@ -164,7 +167,6 @@ body {
     padding: 20px;
     text-align: center;
     border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
     cursor: pointer;
 }
@@ -215,7 +217,6 @@ body {
     border-radius: 16px;
     padding: 25px 30px;
     border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
 }
 
 .glass-card h2 {
@@ -279,20 +280,19 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 40px;
-    padding: 15px 30px;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(15px);
-    border-radius: 25px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    gap: 30px;
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
     position: fixed;
-    bottom: 30px;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
-    max-width: 600px;
-    width: 90%;
+    max-width: 500px;
+    width: 85%;
     margin: 0;
     box-sizing: border-box;
 }
@@ -659,6 +659,7 @@ body {
     width: 100%;
     height: 100%;
     background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -666,13 +667,31 @@ body {
 }
 
 .modal-content {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 20px;
-    padding: 30px;
-    max-width: 400px;
+    border-radius: 24px;
+    padding: 0;
+    max-width: 450px;
     width: 90%;
     color: white;
     position: relative;
+    overflow: hidden;
+    background: transparent;
+    border: none;
+}
+
+.modal-content > .liquid-glass {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    border-radius: 24px;
+}
+
+.modal-content > div:not(.liquid-glass) {
+    position: relative;
+    z-index: 1;
+    padding: 25px;
 }
 
 .modal-close {
@@ -682,6 +701,7 @@ body {
     font-size: 24px;
     cursor: pointer;
     opacity: 0.7;
+    z-index: 2;
 }
 
 .modal-close:hover {
@@ -702,9 +722,9 @@ body {
 .modal-form input,
 .modal-form select,
 .modal-form textarea {
-    background: rgba(255,255,255,0.15) !important;
-    border: 1px solid rgba(255,255,255,0.3) !important;
-    border-radius: 10px;
+    background: rgba(255,255,255,0.1) !important;
+    border: 1px solid rgba(255,255,255,0.15) !important;
+    border-radius: 12px !important;
     padding: 12px;
     color: white !important;
     font-size: 14px;
@@ -735,10 +755,11 @@ body {
     flex: 1;
     text-align: center;
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 12px;
     cursor: pointer;
     background: rgba(255,255,255,0.1);
     transition: all 0.2s;
+    border: 2px solid transparent;
 }
 
 .modal-form .type-select input {
@@ -746,7 +767,7 @@ body {
 }
 
 .modal-form .type-select input:checked + span {
-    background: rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.25);
 }
 
 .modal-form .type-select span {
@@ -845,6 +866,230 @@ body {
     }
 }
 
+/* 社区论坛样式 */
+/* 社区帖子卡片 - 带边缘高光效果 */
+.community-post {
+    border-radius: 16px;
+    padding: 0;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 社区帖子卡片的液态玻璃效果 */
+.community-post .liquid-glass {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    box-shadow: 
+        0 0 20px rgba(102, 126, 234, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.community-post > div {
+    position: relative;
+    z-index: 1;
+    padding: 15px;
+}
+
+.community-post:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 4px 20px rgba(102, 126, 234, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* 社区搜索输入框 */
+.community-search input {
+    width: 100%;
+    padding: 10px 15px 10px 45px;
+    border-radius: 20px;
+    border: none;
+    color: white;
+    font-size: 14px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+/* 社区分类标签容器 */
+.community-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    padding-bottom: 5px;
+}
+
+/* 社区分类标签 */
+.community-tab {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: 13px;
+    position: relative;
+    overflow: hidden;
+}
+
+.community-tab.active {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.8), rgba(118, 75, 162, 0.8));
+    box-shadow: 0 0 15px rgba(102, 126, 234, 0.5);
+}
+
+.community-tab:not(.active) {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* 社区发布按钮 */
+.action-btn {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.8), rgba(118, 75, 162, 0.8));
+    color: white;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 25px;
+    font-size: 14px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.action-btn:hover {
+    transform: scale(1.02);
+}
+
+/* 帖子详情页样式 */
+/* 帖子详情页容器 */
+.post-detail-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 3000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* 帖子详情页液态玻璃模态框 */
+.liquid-glass-modal {
+    border-radius: 24px;
+    max-width: 500px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    color: white;
+    position: relative;
+}
+
+/* 帖子详情页模态框的液态玻璃效果 */
+.liquid-glass-modal .liquid-glass {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    box-shadow: 
+        0 0 30px rgba(102, 126, 234, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.liquid-glass-modal > div {
+    position: relative;
+    z-index: 1;
+}
+
+.back-to-list {
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.comments-list {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+}
+
+.comment-input {
+    display: flex;
+    gap: 10px;
+}
+
+.comment-input input {
+    flex: 1;
+    padding: 12px 15px;
+    border-radius: 25px;
+    border: none;
+    color: white;
+    font-size: 14px;
+}
+
+.like-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 0;
+}
+
+.like-btn.liked {
+    color: #e91e63;
+}
+
+.post-category {
+    padding: 4px 10px;
+    border-radius: 10px;
+    font-size: 11px;
+    color: white;
+}
+
+.post-category.study {
+    background: #4CAF50;
+}
+
+.post-category.life {
+    background: #FF9800;
+}
+
+.post-category.activity {
+    background: #E91E63;
+}
+
 @media (max-width: 480px) {
     .hero-card {
         flex-direction: column;
@@ -873,5 +1118,14 @@ body {
 
     .bottom-nav .nav-item span {
         font-size: 11px;
+    }
+
+    .community-tabs {
+        gap: 8px;
+    }
+
+    .community-tab {
+        padding: 6px 12px;
+        font-size: 12px;
     }
 }
