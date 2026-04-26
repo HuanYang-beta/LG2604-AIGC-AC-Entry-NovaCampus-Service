@@ -867,6 +867,21 @@ body {
 }
 
 /* 社区论坛样式 */
+/* 社区头部 - 话题和发布按钮 */
+.community-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.community-header h5 {
+    color: white;
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+}
+
 /* 社区帖子卡片 - 带边缘高光效果 */
 .community-post {
     border-radius: 16px;
@@ -919,24 +934,24 @@ body {
     position: relative;
 }
 
-/* 社区分类标签容器 */
+/* 话题标签容器 */
 .community-tabs {
     display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 8px;
+    margin-bottom: 15px;
     overflow-x: auto;
     padding-bottom: 5px;
 }
 
-/* 社区分类标签 */
+/* 话题标签 */
 .community-tab {
-    padding: 8px 16px;
-    border-radius: 20px;
+    padding: 6px 12px;
+    border-radius: 16px;
     border: none;
     color: white;
     cursor: pointer;
     white-space: nowrap;
-    font-size: 13px;
+    font-size: 12px;
     position: relative;
     overflow: hidden;
 }
@@ -951,21 +966,18 @@ body {
     color: rgba(255, 255, 255, 0.7);
 }
 
-/* 社区发布按钮 */
+/* 发布按钮 */
 .action-btn {
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.8), rgba(118, 75, 162, 0.8));
     color: white;
     border: none;
-    padding: 14px 24px;
-    border-radius: 25px;
-    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
     cursor: pointer;
-    width: 100%;
-    margin-top: 20px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 8px;
+    gap: 6px;
     position: relative;
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
