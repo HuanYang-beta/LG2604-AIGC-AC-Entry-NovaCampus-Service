@@ -83,11 +83,32 @@ const albumData = [
     { title: "科技节作品展", date: "2024-03-20" }
 ];
 
+// 社区论坛数据
 const communityData = [
-    { author: "小明", avatar: "🎓", title: "求推荐校园美食", content: "各位同学，有什么好吃的食堂推荐吗？一楼还是二楼？", likes: 23, comments: 12, time: "2小时前" },
-    { author: "小红", avatar: "📚", title: "期中考试复习技巧", content: "分享一些复习方法给大家，希望有帮助！", likes: 56, comments: 28, time: "5小时前" },
-    { author: "学霸李", avatar: "🏆", title: "数学竞赛报名", content: "有没有想参加数学竞赛的同学？一起报名吧！", likes: 18, comments: 9, time: "昨天" },
-    { author: "体育健将", avatar: "⚽", title: "篮球赛时间", content: "下周篮球赛，欢迎大家来加油！", likes: 42, comments: 15, time: "2天前" }
+    { id: 1, author: "小明", avatar: "🎓", title: "求推荐校园美食", content: "各位同学，有什么好吃的食堂推荐吗？一楼还是二楼？", category: "life", likes: 23, comments: 12, time: "2小时前", liked: false, commentsList: [
+        { author: "吃货小王", content: "二楼的红烧肉超好吃！", time: "1小时前" },
+        { author: "食堂常客", content: "一楼的麻辣烫不错", time: "30分钟前" }
+    ]},
+    { id: 2, author: "小红", avatar: "📚", title: "期中考试复习技巧", content: "分享一些复习方法给大家：1.制定计划 2.抓住重点 3.多做练习。希望有帮助！", category: "study", likes: 56, comments: 28, time: "5小时前", liked: false, commentsList: [
+        { author: "学霸附体", content: "很实用，感谢分享！", time: "4小时前" },
+        { author: "加油考生", content: "收藏了，考试周用得上", time: "3小时前" }
+    ]},
+    { id: 3, author: "学霸李", avatar: "🏆", title: "数学竞赛报名", content: "有没有想参加数学竞赛的同学？一起报名吧！可以互相学习。", category: "study", likes: 18, comments: 9, time: "昨天", liked: false, commentsList: [
+        { author: "数学爱好者", content: "我想参加！", time: "昨天" }
+    ]},
+    { id: 4, author: "体育健将", avatar: "⚽", title: "篮球赛时间", content: "下周篮球赛，欢迎大家来加油！时间：周三下午4点，地点：操场篮球场。", category: "activity", likes: 42, comments: 15, time: "2天前", liked: false, commentsList: [
+        { author: "篮球迷", content: "一定去！", time: "2天前" },
+        { author: "啦啦队", content: "需要啦啦队吗？", time: "2天前" }
+    ]},
+    { id: 5, author: "音乐王子", avatar: "🎵", title: "校园歌手大赛", content: "一年一度的校园歌手大赛开始报名了！有兴趣的同学快来参加吧！", category: "activity", likes: 67, comments: 32, time: "3天前", liked: false, commentsList: []},
+    { id: 6, author: "电脑高手", avatar: "💻", title: "编程社团招新", content: "编程社团开始招新了！零基础也没关系，我们有培训。想学编程的同学快来！", category: "study", likes: 45, comments: 20, time: "3天前", liked: false, commentsList: [
+        { author: "萌新一枚", content: "我也想学！", time: "3天前" }
+    ]},
+    { id: 7, author: "美食达人", avatar: "🍜", title: "食堂新菜品", content: "发现食堂最近上新了一款小龙虾，味道很不错，推荐大家去尝尝！", category: "life", likes: 88, comments: 42, time: "4天前", liked: false, commentsList: [
+        { author: "吃货本货", content: "真的吗？晚上就去！", time: "4天前" },
+        { author: "馋嘴猫", content: "多少钱一份啊？", time: "4天前" }
+    ]},
+    { id: 8, author: "环保小卫士", avatar: "🌱", title: "校园环保倡议", content: "大家一起来保护校园环境吧！不乱扔垃圾，节约用电用水。", category: "life", likes: 35, comments: 8, time: "5天前", liked: false, commentsList: []}
 ];
 
 function initLiquidGlass() {
@@ -582,68 +603,357 @@ function initCalendar(container) {
     });
 }
 
+/**
+ * 初始化社区论坛功能
+ * @param {HTMLElement} container - 社区论坛容器元素
+ */
 function initCommunity(container) {
+    let currentTab = 'all';
+    let currentPosts = [...communityData];
+
     container.innerHTML = `
         <h4 style="color:white;margin-bottom:15px;font-size:16px;">社区论坛</h4>
         <div class="community-search" style="margin-bottom:15px;">
-            <input type="text" id="communitySearchInput" placeholder="搜索帖子..." style="width:100%;padding:10px 15px;border-radius:20px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.1);color:white;font-size:14px;box-sizing:border-box;">
+            <div style="position:relative;">
+                <img src="assets/icons/HarmonyOS_Icons/ic_public_search.svg" style="position:absolute;left:15px;top:50%;transform:translateY(-50%);width:18px;height:18px;filter:invert(1);opacity:0.7;">
+                <input type="text" id="communitySearchInput" placeholder="搜索帖子..." class="liquid-glass-direct intensity-subtle" style="width:100%;padding:10px 15px 10px 45px;border-radius:20px;border:none;color:white;font-size:14px;box-sizing:border-box;">
+            </div>
         </div>
-        <div class="community-tabs" style="display:flex;gap:10px;margin-bottom:20px;overflow-x:auto;">
-            <button class="community-tab active" data-tab="all" style="padding:8px 16px;border-radius:20px;border:none;background:rgba(255,255,255,0.2);color:white;cursor:pointer;white-space:nowrap;">全部</button>
-            <button class="community-tab" data-tab="study" style="padding:8px 16px;border-radius:20px;border:none;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);cursor:pointer;white-space:nowrap;">学习</button>
-            <button class="community-tab" data-tab="life" style="padding:8px 16px;border-radius:20px;border:none;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);cursor:pointer;white-space:nowrap;">生活</button>
-            <button class="community-tab" data-tab="activity" style="padding:8px 16px;border-radius:20px;border:none;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);cursor:pointer;white-space:nowrap;">活动</button>
+        <div class="community-tabs" style="display:flex;gap:10px;margin-bottom:20px;overflow-x:auto;padding-bottom:5px;">
+            <button class="community-tab active" data-tab="all" style="padding:8px 16px;border-radius:20px;border:none;background:linear-gradient(135deg,rgba(102,126,234,0.6),rgba(118,75,162,0.6));color:white;cursor:pointer;white-space:nowrap;font-size:13px;position:relative;overflow:hidden;">全部</button>
+            <button class="community-tab" data-tab="study" style="padding:8px 16px;border-radius:20px;border:none;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);cursor:pointer;white-space:nowrap;font-size:13px;position:relative;overflow:hidden;">学习</button>
+            <button class="community-tab" data-tab="life" style="padding:8px 16px;border-radius:20px;border:none;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);cursor:pointer;white-space:nowrap;font-size:13px;position:relative;overflow:hidden;">生活</button>
+            <button class="community-tab" data-tab="activity" style="padding:8px 16px;border-radius:20px;border:none;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);cursor:pointer;white-space:nowrap;font-size:13px;position:relative;overflow:hidden;">活动</button>
         </div>
         <div class="community-posts" id="communityPosts"></div>
-        <button class="action-btn" id="createPostBtn" style="background:#667eea;color:white;border:none;padding:12px 24px;border-radius:25px;font-size:14px;cursor:pointer;width:100%;margin-top:20px;">
-            <img src="assets/icons/HarmonyOS_Icons/ic_public_add.svg" style="width:18px;height:18px;vertical-align:middle;margin-right:8px;filter:invert(1);">发布新帖
+        <button class="action-btn" id="createPostBtn" style="background:linear-gradient(135deg,rgba(102,126,234,0.8),rgba(118,75,162,0.8));color:white;border:none;padding:14px 24px;border-radius:25px;font-size:14px;cursor:pointer;width:100%;margin-top:20px;display:flex;align-items:center;justify-content:center;gap:8px;position:relative;overflow:hidden;">
+            <img src="assets/icons/HarmonyOS_Icons/ic_public_add.svg" style="width:18px;height:18px;filter:invert(1);">发布新帖
         </button>
     `;
+
     const postsContainer = container.querySelector('#communityPosts');
     const searchInput = container.querySelector('#communitySearchInput');
     const tabs = container.querySelectorAll('.community-tab');
 
+    if (typeof applyLiquidGlass !== 'undefined') {
+        applyLiquidGlass(searchInput, { intensity: 'subtle' });
+    }
+
     function renderPosts(posts) {
         postsContainer.innerHTML = '';
+        if (posts.length === 0) {
+            postsContainer.innerHTML = '<div style="text-align:center;color:rgba(255,255,255,0.5);padding:40px;">暂无帖子</div>';
+            return;
+        }
         posts.forEach(post => {
-            const div = document.createElement('div');
-            div.className = 'community-post';
-            div.style.cssText = 'background:rgba(255,255,255,0.15);border-radius:12px;padding:15px;margin-bottom:15px;cursor:pointer;';
-            div.innerHTML = `
-                <div class="post-header" style="display:flex;align-items:center;margin-bottom:10px;">
-                    <div style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;margin-right:10px;">
-                        <img src="assets/icons/HarmonyOS_Icons/ic_public_contacts_filled.svg" style="width:20px;height:20px;filter:invert(1);opacity:0.8;">
+            const categoryMap = { study: '学习', life: '生活', activity: '活动' };
+            const categoryColors = { study: '#4CAF50', life: '#FF9800', activity: '#E91E63' };
+            const postDiv = document.createElement('div');
+            postDiv.className = 'community-post liquid-glass-card';
+            postDiv.style.cssText = 'border-radius:16px;padding:0;margin-bottom:15px;cursor:pointer;position:relative;overflow:hidden;';
+            postDiv.innerHTML = `
+                <div class="liquid-glass" style="border-radius:16px;"></div>
+                <div style="padding:15px;position:relative;z-index:1;">
+                    <div class="post-header" style="display:flex;align-items:center;margin-bottom:10px;">
+                        <div style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;margin-right:10px;font-size:20px;">
+                            ${post.avatar}
+                        </div>
+                        <div style="flex:1;">
+                            <div style="color:white;font-weight:500;font-size:14px;">${post.author}</div>
+                            <div style="color:rgba(255,255,255,0.5);font-size:11px;">${post.time}</div>
+                        </div>
+                        <span class="post-category" style="padding:4px 10px;border-radius:10px;font-size:11px;background:${categoryColors[post.category] || '#667eea'};color:white;">${categoryMap[post.category] || '全部'}</span>
                     </div>
-                    <div>
-                        <div style="color:white;font-weight:500;font-size:14px;">${post.author}</div>
-                        <div style="color:rgba(255,255,255,0.5);font-size:11px;">${post.time}</div>
+                    <div class="post-title" style="color:white;font-weight:500;font-size:15px;margin-bottom:8px;">${post.title}</div>
+                    <div class="post-content" style="color:rgba(255,255,255,0.8);font-size:13px;line-height:1.5;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${post.content}</div>
+                    <div class="post-actions" style="display:flex;gap:20px;color:rgba(255,255,255,0.6);font-size:13px;">
+                        <button class="like-btn ${post.liked ? 'liked' : ''}" data-id="${post.id}" style="display:flex;align-items:center;gap:5px;background:none;border:none;color:${post.liked ? '#e91e63' : 'rgba(255,255,255,0.6)'};cursor:pointer;font-size:13px;padding:0;">
+                            <img src="assets/icons/HarmonyOS_Icons/ic_public_thumbsup.svg" style="width:16px;height:16px;filter:${post.liked ? 'hue-rotate(320deg)' : 'invert(1)'};opacity:0.7;"> ${post.likes}
+                        </button>
+                        <span style="display:flex;align-items:center;gap:5px;">
+                            <img src="assets/icons/HarmonyOS_Icons/ic_public_comments.svg" style="width:16px;height:16px;filter:invert(1);opacity:0.7;"> ${post.comments}
+                        </span>
                     </div>
-                </div>
-                <div class="post-title" style="color:white;font-weight:500;font-size:15px;margin-bottom:8px;">${post.title}</div>
-                <div class="post-content" style="color:rgba(255,255,255,0.8);font-size:13px;line-height:1.5;margin-bottom:12px;">${post.content}</div>
-                <div class="post-actions" style="display:flex;gap:20px;color:rgba(255,255,255,0.6);font-size:13px;">
-                    <span style="display:flex;align-items:center;gap:5px;">
-                        <img src="assets/icons/HarmonyOS_Icons/ic_public_thumbsup.svg" style="width:16px;height:16px;filter:invert(1);opacity:0.7;"> ${post.likes}
-                    </span>
-                    <span style="display:flex;align-items:center;gap:5px;">
-                        <img src="assets/icons/HarmonyOS_Icons/ic_public_comments.svg" style="width:16px;height:16px;filter:invert(1);opacity:0.7;"> ${post.comments}
-                    </span>
                 </div>
             `;
-            postsContainer.appendChild(div);
+
+            if (typeof applyLiquidGlass !== 'undefined') {
+                applyLiquidGlass(postDiv, { intensity: 'normal' });
+            }
+
+            // 悬停效果已在CSS中定义
+            postDiv.addEventListener('click', (e) => {
+                if (!e.target.closest('.like-btn')) {
+                    showPostDetail(post.id);
+                }
+            });
+
+            const likeBtn = postDiv.querySelector('.like-btn');
+            likeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleLike(post.id);
+                renderPosts(getFilteredPosts());
+            });
+
+            postsContainer.appendChild(postDiv);
         });
     }
 
-    renderPosts(communityData);
+    function getFilteredPosts() {
+        const query = searchInput.value.toLowerCase();
+        let filtered = [...communityData];
+
+        if (currentTab !== 'all') {
+            filtered = filtered.filter(p => p.category === currentTab);
+        }
+
+        if (query.length > 0) {
+            filtered = filtered.filter(p =>
+                p.title.toLowerCase().includes(query) ||
+                p.content.toLowerCase().includes(query) ||
+                p.author.toLowerCase().includes(query)
+            );
+        }
+
+        return filtered;
+    }
+
+    function toggleLike(postId) {
+        const post = communityData.find(p => p.id === postId);
+        if (post) {
+            post.liked = !post.liked;
+            post.likes += post.liked ? 1 : -1;
+        }
+    }
+
+    function showPostDetail(postId) {
+        const post = communityData.find(p => p.id === postId);
+        if (!post) return;
+
+        const categoryMap = { study: '学习', life: '生活', activity: '活动' };
+        const categoryColors = { study: '#4CAF50', life: '#FF9800', activity: '#E91E63' };
+
+        const detailPage = document.createElement('div');
+        detailPage.className = 'post-detail-page';
+        detailPage.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);backdrop-filter:blur(5px);z-index:3000;display:flex;align-items:center;justify-content:center;padding:20px;';
+        detailPage.innerHTML = `
+            <div class="liquid-glass-modal" style="border-radius:24px;max-width:500px;width:100%;max-height:80vh;overflow-y:auto;color:white;position:relative;">
+                <div class="liquid-glass" style="border-radius:24px;"></div>
+                <div style="padding:0;position:relative;z-index:1;">
+                    <div style="padding:20px;border-bottom:1px solid rgba(255,255,255,0.15);display:flex;align-items:center;gap:15px;">
+                        <button class="back-to-list" style="background:rgba(255,255,255,0.15);border:none;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+                            <img src="assets/icons/HarmonyOS_Icons/ic_public_back.svg" style="width:18px;height:18px;filter:invert(1);">
+                        </button>
+                        <span style="font-size:16px;font-weight:500;">帖子详情</span>
+                    </div>
+                    <div style="padding:20px;">
+                        <div class="post-header" style="display:flex;align-items:center;margin-bottom:15px;">
+                            <div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;margin-right:12px;font-size:24px;">
+                                ${post.avatar}
+                            </div>
+                            <div style="flex:1;">
+                                <div style="font-weight:500;font-size:15px;">${post.author}</div>
+                                <div style="font-size:12px;opacity:0.6;">${post.time}</div>
+                            </div>
+                            <span class="post-category" style="padding:4px 12px;border-radius:12px;font-size:12px;background:${categoryColors[post.category] || '#667eea'};">${categoryMap[post.category] || '全部'}</span>
+                        </div>
+                        <h2 style="font-size:18px;margin-bottom:12px;">${post.title}</h2>
+                        <p style="font-size:14px;line-height:1.6;opacity:0.9;margin-bottom:20px;">${post.content}</p>
+                        <div class="post-actions" style="display:flex;gap:20px;padding:15px 0;border-top:1px solid rgba(255,255,255,0.1);border-bottom:1px solid rgba(255,255,255,0.1);margin-bottom:15px;">
+                            <button class="like-btn ${post.liked ? 'liked' : ''}" data-id="${post.id}" style="display:flex;align-items:center;gap:6px;background:none;border:none;color:${post.liked ? '#e91e63' : 'rgba(255,255,255,0.7)'};cursor:pointer;font-size:14px;padding:0;">
+                                <img src="assets/icons/HarmonyOS_Icons/ic_public_thumbsup.svg" style="width:18px;height:18px;filter:${post.liked ? 'hue-rotate(320deg)' : 'invert(1)'};opacity:0.9;"> ${post.likes} 点赞
+                            </button>
+                            <span style="display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.7);font-size:14px;">
+                                <img src="assets/icons/HarmonyOS_Icons/ic_public_comments.svg" style="width:18px;height:18px;filter:invert(1);opacity:0.9;"> ${post.comments} 评论
+                            </span>
+                        </div>
+                        <div class="comments-section">
+                            <h4 style="font-size:14px;margin-bottom:15px;display:flex;align-items:center;gap:8px;">
+                                <img src="assets/icons/HarmonyOS_Icons/ic_public_comments.svg" style="width:16px;height:16px;filter:invert(1);opacity:0.8;"> 评论列表
+                            </h4>
+                            <div class="comments-list" id="detailCommentsList" style="max-height:200px;overflow-y:auto;margin-bottom:15px;"></div>
+                            <div class="comment-input" style="display:flex;gap:10px;">
+                                <input type="text" id="commentInput" placeholder="写下你的评论..." class="liquid-glass-direct intensity-subtle" style="flex:1;padding:12px 15px;border-radius:25px;border:none;color:white;font-size:14px;">
+                                <button id="submitCommentBtn" style="padding:12px 20px;border-radius:25px;border:none;background:linear-gradient(135deg,rgba(102,126,234,0.8),rgba(118,75,162,0.8));color:white;font-size:14px;cursor:pointer;">发送</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(detailPage);
+
+        const modalEl = detailPage.querySelector('.liquid-glass-modal');
+        if (typeof applyLiquidGlass !== 'undefined') {
+            applyLiquidGlass(modalEl, { intensity: 'normal' });
+        }
+
+        const commentsList = detailPage.querySelector('#detailCommentsList');
+        if (post.commentsList && post.commentsList.length > 0) {
+            post.commentsList.forEach(comment => {
+                const commentDiv = document.createElement('div');
+                commentDiv.style.cssText = 'background:rgba(255,255,255,0.1);border-radius:12px;padding:12px;margin-bottom:10px;';
+                commentDiv.innerHTML = `
+                    <div style="font-weight:500;font-size:13px;margin-bottom:4px;">${comment.author}</div>
+                    <div style="font-size:13px;opacity:0.9;">${comment.content}</div>
+                    <div style="font-size:11px;opacity:0.5;margin-top:4px;">${comment.time}</div>
+                `;
+                commentsList.appendChild(commentDiv);
+            });
+        } else {
+            commentsList.innerHTML = '<div style="text-align:center;color:rgba(255,255,255,0.5);padding:20px;">暂无评论，快来抢沙发！</div>';
+        }
+
+        const likeBtn = detailPage.querySelector('.like-btn');
+        likeBtn.addEventListener('click', () => {
+            toggleLike(post.id);
+            likeBtn.classList.toggle('liked');
+            likeBtn.style.color = post.liked ? '#e91e63' : 'rgba(255,255,255,0.7)';
+            likeBtn.innerHTML = `<img src="assets/icons/HarmonyOS_Icons/ic_public_thumbsup.svg" style="width:18px;height:18px;filter:${post.liked ? 'hue-rotate(320deg)' : 'invert(1)'};opacity:0.9;"> ${post.likes} 点赞`;
+            renderPosts(getFilteredPosts());
+        });
+
+        const submitCommentBtn = detailPage.querySelector('#submitCommentBtn');
+        const commentInput = detailPage.querySelector('#commentInput');
+
+        if (typeof applyLiquidGlass !== 'undefined' && commentInput) {
+            applyLiquidGlass(commentInput, { intensity: 'subtle' });
+        }
+
+        submitCommentBtn.addEventListener('click', () => {
+            const content = commentInput.value.trim();
+            if (!content) return;
+
+            const timeStr = '刚刚';
+
+            post.commentsList.unshift({ author: '我', content, time: timeStr });
+            post.comments++;
+
+            commentInput.value = '';
+            renderPosts(getFilteredPosts());
+
+            const newComment = document.createElement('div');
+            newComment.style.cssText = 'background:rgba(255,255,255,0.1);border-radius:12px;padding:12px;margin-bottom:10px;';
+            newComment.innerHTML = `
+                <div style="font-weight:500;font-size:13px;margin-bottom:4px;">我</div>
+                <div style="font-size:13px;opacity:0.9;">${content}</div>
+                <div style="font-size:11px;opacity:0.5;margin-top:4px;">刚刚</div>
+            `;
+            if (commentsList.querySelector('div[style*="暂无评论"]')) {
+                commentsList.innerHTML = '';
+            }
+            commentsList.insertBefore(newComment, commentsList.firstChild);
+        });
+
+        commentInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') submitCommentBtn.click();
+        });
+
+        const backBtn = detailPage.querySelector('.back-to-list');
+        backBtn.addEventListener('click', () => {
+            detailPage.remove();
+        });
+
+        detailPage.addEventListener('click', (e) => {
+            if (e.target === detailPage) {
+                detailPage.remove();
+            }
+        });
+    }
+
+    function showCreatePostModal() {
+        const modal = document.getElementById('modal');
+        const modalBody = document.getElementById('modalBody');
+        modal.style.display = 'flex';
+        modalBody.className = 'liquid-glass-modal';
+        modalBody.style.cssText = 'border-radius:20px;padding:25px;max-width:450px;width:100%;position:relative;overflow:hidden;';
+        modalBody.innerHTML = `
+            <div class="liquid-glass" style="border-radius:20px;"></div>
+            <div style="position:relative;z-index:1;">
+                <h3 style="margin-bottom:20px;text-align:center;">发布新帖</h3>
+                <div class="modal-form" style="display:flex;flex-direction:column;gap:15px;">
+                    <div>
+                        <label style="display:block;font-size:13px;margin-bottom:8px;opacity:0.8;">选择分类</label>
+                        <div class="category-select" style="display:flex;gap:10px;">
+                            <label class="cat-label" style="flex:1;text-align:center;padding:12px;border-radius:12px;background:rgba(255,255,255,0.1);cursor:pointer;transition:all 0.2s;border:2px solid transparent;">
+                                <input type="radio" name="postCategory" value="study" style="display:none;">
+                                <span style="display:block;font-size:14px;">📚 学习</span>
+                            </label>
+                            <label class="cat-label" style="flex:1;text-align:center;padding:12px;border-radius:12px;background:rgba(255,255,255,0.1);cursor:pointer;transition:all 0.2s;border:2px solid transparent;">
+                                <input type="radio" name="postCategory" value="life" style="display:none;">
+                                <span style="display:block;font-size:14px;">🍜 生活</span>
+                            </label>
+                            <label class="cat-label" style="flex:1;text-align:center;padding:12px;border-radius:12px;background:rgba(255,255,255,0.1);cursor:pointer;transition:all 0.2s;border:2px solid transparent;">
+                                <input type="radio" name="postCategory" value="activity" style="display:none;">
+                                <span style="display:block;font-size:14px;">🎉 活动</span>
+                            </label>
+                        </div>
+                    </div>
+                    <input type="text" id="postTitle" placeholder="帖子标题" class="liquid-glass-direct intensity-subtle" style="background:rgba(255,255,255,0.1);border:none;border-radius:12px;padding:12px;color:white;font-size:14px;">
+                    <textarea id="postContent" placeholder="分享你的内容..." class="liquid-glass-direct intensity-subtle" style="background:rgba(255,255,255,0.1);border:none;border-radius:12px;padding:12px;color:white;font-size:14px;min-height:120px;resize:vertical;"></textarea>
+                    <button id="submitPostBtn" style="background:linear-gradient(135deg,rgba(102,126,234,0.9),rgba(118,75,162,0.9));color:white;border:none;padding:14px;border-radius:12px;cursor:pointer;font-size:14px;font-weight:500;margin-top:5px;">发布帖子</button>
+                </div>
+            </div>
+        `;
+
+        if (typeof applyLiquidGlass !== 'undefined') {
+            applyLiquidGlass(modalBody, { intensity: 'normal' });
+        }
+
+        const categoryLabels = modalBody.querySelectorAll('.cat-label');
+        categoryLabels.forEach(label => {
+            label.addEventListener('click', () => {
+                categoryLabels.forEach(l => l.style.borderColor = 'transparent');
+                label.style.borderColor = '#667eea';
+            });
+        });
+
+        const submitPostBtn = modalBody.querySelector('#submitPostBtn');
+        submitPostBtn.addEventListener('click', () => {
+            const category = document.querySelector('input[name="postCategory"]:checked')?.value;
+            const title = document.getElementById('postTitle').value.trim();
+            const content = document.getElementById('postContent').value.trim();
+
+            if (!category) {
+                alert('请选择分类');
+                return;
+            }
+            if (!title) {
+                alert('请输入标题');
+                return;
+            }
+            if (!content) {
+                alert('请输入内容');
+                return;
+            }
+
+            const timeStr = '刚刚';
+            const avatars = ['😊', '🙋', '🌟', '💫', '✨', '🎯'];
+            const randomAvatar = avatars[Math.floor(Math.random() * avatars.length)];
+
+            communityData.unshift({
+                id: Date.now(),
+                author: '我',
+                avatar: randomAvatar,
+                title,
+                content,
+                category,
+                likes: 0,
+                comments: 0,
+                time: timeStr,
+                liked: false,
+                commentsList: []
+            });
+
+            closeModal();
+            renderPosts(getFilteredPosts());
+        });
+    }
 
     searchInput.oninput = function() {
-        const query = this.value.toLowerCase();
-        if (query.length > 0) {
-            const filtered = communityData.filter(p => p.title.toLowerCase().includes(query) || p.content.toLowerCase().includes(query));
-            renderPosts(filtered);
-        } else {
-            renderPosts(communityData);
-        }
+        currentPosts = getFilteredPosts();
+        renderPosts(currentPosts);
     };
 
     tabs.forEach(tab => {
@@ -654,14 +964,17 @@ function initCommunity(container) {
                 t.style.color = 'rgba(255,255,255,0.7)';
             });
             this.classList.add('active');
-            this.style.background = 'rgba(255,255,255,0.2)';
+            this.style.background = 'linear-gradient(135deg,rgba(102,126,234,0.8),rgba(118,75,162,0.8))';
             this.style.color = 'white';
+            currentTab = this.getAttribute('data-tab');
+            currentPosts = getFilteredPosts();
+            renderPosts(currentPosts);
         };
     });
 
-    container.querySelector('#createPostBtn').onclick = () => {
-        alert('发布功能开发中...');
-    };
+    container.querySelector('#createPostBtn').onclick = showCreatePostModal;
+
+    renderPosts(currentPosts);
 }
 
 function initAbout(container) {
@@ -708,7 +1021,22 @@ function initAbout(container) {
 }
 
 function closeModal() {
-    document.getElementById('modal').style.display = 'none';
+    const modal = document.getElementById('modal');
+    const modalBody = document.getElementById('modalBody');
+    modal.style.display = 'none';
+
+    const liquidGlassOverlay = modalBody.querySelector('.liquid-glass');
+    if (liquidGlassOverlay) {
+        liquidGlassOverlay.remove();
+    }
+
+    const glassCard = modalBody.querySelector('.liquid-glass-card');
+    if (glassCard) {
+        glassCard.classList.remove('liquid-glass-card');
+    }
+
+    modalBody.className = 'modal-content';
+    modalBody.style.cssText = '';
 }
 
 window.addEventListener('DOMContentLoaded', function() {
